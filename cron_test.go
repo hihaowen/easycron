@@ -13,7 +13,7 @@ func TestRecurrentTimerExecution(t *testing.T) {
 		c <- true
 	}
 
-	Run(fn, RecurrentTimer{Interval: 1})
+	new(Task).Every(1).Run(fn)
 
 	select {
 	case <-c:

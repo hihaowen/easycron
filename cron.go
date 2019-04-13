@@ -63,9 +63,19 @@ func (once OnceTimer) NextDuration() (time.Duration, error) {
 	return nextTime.Sub(nowTime), nil
 }
 
+// 定义任务结构
+type Task struct {
+	T Timer
+}
+
+// 每多少秒执行
+func (task Task) Every(seconds int) *Task {
+	return &Task{T: RecurrentTimer{int64(seconds)}}
+}
+
 // 执行任务
-func Run(fn func(), timer Timer) {
-	duration, err := timer.NextDuration()
+func (task *Task) Run(fn func()) {
+	duration, err := task.T.NextDuration()
 	if err != nil {
 		log.Println("任务建立失败:", err)
 		return
